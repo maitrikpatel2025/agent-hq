@@ -7,12 +7,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI  # noqa: E402
+from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
 
-from gateway_client import gateway_client
-from dashboard_routes import router as dashboard_router
-from gateway_routes import router as gateway_router
+from dashboard_routes import router as dashboard_router  # noqa: E402
+from gateway_client import gateway_client  # noqa: E402
+from gateway_routes import router as gateway_router  # noqa: E402
 
 logging.basicConfig(
     level=logging.INFO,
