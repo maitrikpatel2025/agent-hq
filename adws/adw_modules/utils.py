@@ -401,5 +401,8 @@ def get_safe_subprocess_env() -> Dict[str, str]:
     if github_pat:
         safe_env_vars["GH_TOKEN"] = github_pat
     
-    # Filter out None values
-    return {k: v for k, v in safe_env_vars.items() if v is not None}
+    # Filter out None values and placeholder strings (e.g. "your_*_here")
+    def _is_valid(v: str) -> bool:
+        return v is not None and not (v.startswith("your_") and v.endswith("_here"))
+
+    return {k: v for k, v in safe_env_vars.items() if _is_valid(v)}
