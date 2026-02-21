@@ -65,6 +65,11 @@ export async function patchConfig(patch) {
   return data
 }
 
+export async function fetchDashboard() {
+  const { data } = await api.get('/dashboard')
+  return data
+}
+
 /**
  * Subscribe to the SSE event stream from the gateway.
  * @param {function} onEvent - Callback receiving { event, data } objects.

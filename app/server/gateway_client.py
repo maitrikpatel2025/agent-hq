@@ -11,7 +11,6 @@ import asyncio
 import json
 import logging
 import os
-import uuid
 from collections.abc import Callable
 from typing import Any
 
@@ -20,9 +19,9 @@ from websockets.exceptions import ConnectionClosed
 
 from gateway_models import (
     ClientInfo,
-    ConnectParams,
     ConnectionState,
     ConnectionStatus,
+    ConnectParams,
     GatewayEvent,
     GatewayRequest,
     GatewayResponse,

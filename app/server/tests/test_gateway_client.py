@@ -1,6 +1,5 @@
 """Unit tests for the gateway WebSocket client."""
 
-import asyncio
 
 import pytest
 
@@ -77,22 +76,33 @@ class TestEventCallbacks:
 
     def test_register_event_callback(self):
         client = GatewayClient(url="", token="")
-        callback = lambda event: None
+
+        def callback(event):
+            pass
+
         client.on_event("agent", callback)
         assert "agent" in client._event_callbacks
         assert callback in client._event_callbacks["agent"]
 
     def test_register_multiple_callbacks(self):
         client = GatewayClient(url="", token="")
-        cb1 = lambda event: None
-        cb2 = lambda event: None
+
+        def cb1(event):
+            pass
+
+        def cb2(event):
+            pass
+
         client.on_event("agent", cb1)
         client.on_event("agent", cb2)
         assert len(client._event_callbacks["agent"]) == 2
 
     def test_register_global_callback(self):
         client = GatewayClient(url="", token="")
-        callback = lambda event: None
+
+        def callback(event):
+            pass
+
         client.on_any_event(callback)
         assert callback in client._global_event_callbacks
 
