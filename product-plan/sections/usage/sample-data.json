@@ -1,0 +1,130 @@
+{
+  "_meta": {
+    "models": {
+      "UsageSummary": "Aggregate metrics for the selected time period — total cost, token counts, averages, and comparison to the previous period.",
+      "TimeSeriesPoint": "A single data point on the usage trend chart, representing cost at a specific time.",
+      "AgentUsage": "Per-agent breakdown of cost and token consumption for the selected time period.",
+      "ModelUsage": "Per-model breakdown of cost and token consumption for the selected time period.",
+      "SparklineData": "Array of values used to render inline sparkline charts on metric cards."
+    },
+    "relationships": [
+      "AgentUsage references an Agent by agentId and agentName",
+      "ModelUsage groups Activity records by model identifier",
+      "TimeSeriesPoint aggregates Activity cost data into time buckets",
+      "UsageSummary is computed from all Activity records in the selected period"
+    ]
+  },
+  "selectedPeriod": "week",
+  "summary": {
+    "totalCost": 127.43,
+    "previousCost": 142.18,
+    "totalTokens": 2847500,
+    "previousTokens": 3105200,
+    "inputTokens": 1923400,
+    "outputTokens": 924100,
+    "avgCostPerAgent": 21.24,
+    "previousAvgCost": 23.70,
+    "activeAgents": 6,
+    "costSparkline": [14.2, 18.7, 22.1, 16.8, 19.4, 21.3, 15.0],
+    "tokenSparkline": [380000, 425000, 460200, 372800, 410500, 438000, 361000]
+  },
+  "timeSeries": [
+    { "date": "2026-02-14", "cost": 14.20, "tokens": 380000 },
+    { "date": "2026-02-15", "cost": 18.72, "tokens": 425000 },
+    { "date": "2026-02-16", "cost": 22.10, "tokens": 460200 },
+    { "date": "2026-02-17", "cost": 16.83, "tokens": 372800 },
+    { "date": "2026-02-18", "cost": 19.41, "tokens": 410500 },
+    { "date": "2026-02-19", "cost": 21.30, "tokens": 438000 },
+    { "date": "2026-02-20", "cost": 14.87, "tokens": 361000 }
+  ],
+  "byAgent": [
+    {
+      "agentId": "agent-006",
+      "agentName": "Forge",
+      "role": "Full-Stack Developer",
+      "totalCost": 38.42,
+      "inputTokens": 612000,
+      "outputTokens": 298400,
+      "totalTokens": 910400
+    },
+    {
+      "agentId": "agent-001",
+      "agentName": "Atlas",
+      "role": "Operations Lead",
+      "totalCost": 28.15,
+      "inputTokens": 445200,
+      "outputTokens": 187600,
+      "totalTokens": 632800
+    },
+    {
+      "agentId": "agent-002",
+      "agentName": "Nova",
+      "role": "Content Strategist",
+      "totalCost": 22.68,
+      "inputTokens": 328700,
+      "outputTokens": 201300,
+      "totalTokens": 530000
+    },
+    {
+      "agentId": "agent-003",
+      "agentName": "Cipher",
+      "role": "DevOps Engineer",
+      "totalCost": 18.94,
+      "inputTokens": 284500,
+      "outputTokens": 128900,
+      "totalTokens": 413400
+    },
+    {
+      "agentId": "agent-005",
+      "agentName": "Pulse",
+      "role": "Community Manager",
+      "totalCost": 12.30,
+      "inputTokens": 168000,
+      "outputTokens": 72400,
+      "totalTokens": 240400
+    },
+    {
+      "agentId": "agent-004",
+      "agentName": "Sage",
+      "role": "Research Analyst",
+      "totalCost": 6.94,
+      "inputTokens": 85000,
+      "outputTokens": 35500,
+      "totalTokens": 120500
+    }
+  ],
+  "byModel": [
+    {
+      "model": "claude-sonnet-4-5-20250929",
+      "displayName": "Sonnet 4.5",
+      "totalCost": 85.51,
+      "inputTokens": 1341700,
+      "outputTokens": 615000,
+      "totalTokens": 1956700
+    },
+    {
+      "model": "gpt-4o",
+      "displayName": "GPT-4o",
+      "totalCost": 22.68,
+      "inputTokens": 328700,
+      "outputTokens": 201300,
+      "totalTokens": 530000
+    },
+    {
+      "model": "claude-haiku-4-5-20251001",
+      "displayName": "Haiku 4.5",
+      "totalCost": 12.30,
+      "inputTokens": 168000,
+      "outputTokens": 72400,
+      "totalTokens": 240400
+    },
+    {
+      "model": "gpt-4o-mini",
+      "displayName": "4o Mini",
+      "totalCost": 6.94,
+      "inputTokens": 85000,
+      "outputTokens": 35500,
+      "totalTokens": 120500
+    }
+  ]
+}

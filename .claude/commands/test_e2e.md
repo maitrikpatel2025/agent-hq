@@ -1,0 +1,95 @@
+# E2E Test Runner
+
+Execute end-to-end (E2E) tests for the application using Playwright browser automation (MCP Server). If any errors occur and assertions fail, mark the test as failed and explain exactly what went wrong.
+
+## Application Overview
+
+The application is a full-stack app with:
+
+- **Frontend (React 18)**: `app/client/` - React with React Router v6, Tailwind CSS
+- **Backend (FastAPI)**: `app/server/` - Python FastAPI with UV package manager
+  - Health: `/api/test`, `/api/health`
+  - API Docs: `/docs` (Swagger UI)
+
+## Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `adw_id` | Unique workflow identifier | `$1` if provided, otherwise generate random 8 character hex string |
+| `agent_name` | Agent executing the test | `$2` if provided, otherwise `test_e2e` |
+| `e2e_test_file` | Path to the E2E test specification | `$3` (required) |
+| `application_url` | Base URL for the frontend application | `$4` if provided, otherwise `http://localhost:3000` |
+
+## Test File Location
+
+E2E test specifications are located in `.claude/commands/e2e/`.
+
+## Instructions
+
+### Phase 1: Preparation
+
+1. Read the `e2e_test_file` specified in the variables
+2. Digest the `User Story` to understand what functionality is being validated
+3. Note the `Success Criteria` to understand pass/fail conditions
+
+### Phase 2: Setup
+
+Execute `.claude/commands/prepare_app.md` to ensure the application is running:
+- Backend API should be running on `http://localhost:8000`
+- Frontend should be running on `http://localhost:3000`
+
+### Phase 3: Test Execution
+
+1. **Initialize Playwright browser** in headed mode for visibility
+2. Navigate to the `application_url`
+3. **Execute each `Test Step`** from the test file in sequence
+4. For each **Verify** step:
+   - Check the assertion
+   - If it fails, immediately mark the test as failed
+   - Format failure as: `(Step N) [Step description] - [Error details]`
+5. **Capture screenshots** as specified in the test steps
+
+### Phase 4: Screenshot Management
+
+Save screenshots to the designated directory with descriptive names:
+
+**Directory Structure:**
+```
+<codebase_root>/agents/<adw_id>/<agent_name>/img/<test_directory_name>/
+```
+
+**Naming Convention:**
+```
+01_<descriptive_name>.png
+02_<descriptive_name>.png
+```
+
+### Phase 5: Error Handling
+
+If you encounter an error:
+1. Mark the test as **failed** immediately
+2. Report the exact step where the failure occurred
+3. Include the specific error message
+
+## Output Format
+
+Return results in the following JSON format:
+
+```json
+{
+  "test_name": "Test Name Here",
+  "status": "passed|failed",
+  "steps_completed": 5,
+  "total_steps": 10,
+  "screenshots": [],
+  "error": null,
+  "failed_step": null
+}
+```
+
+## Integration with ADW
+
+This test runner integrates with the AI Developer Workflow (ADW) system:
+- Screenshots are stored in the ADW workspace: `agents/{adw_id}/`
+- Test results can be consumed by `adw_test.py` for automated testing
+- Failed tests can be resolved using `.claude/commands/resolve_failed_e2e_test.md`

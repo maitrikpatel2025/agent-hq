@@ -1,0 +1,178 @@
+{
+  "_meta": {
+    "models": {
+      "Job": "A scheduled or recurring task assigned to an agent, synced from the OpenClaw Gateway. Includes cron schedule, timezone, enabled state, and references to the assigned agent.",
+      "JobRun": "A single execution record for a job, capturing when it ran, whether it succeeded or failed, how long it took, and optional output summary."
+    },
+    "relationships": [
+      "Each Job belongs to one Agent",
+      "Each Job has many JobRun records ordered by timestamp descending"
+    ]
+  },
+  "jobs": [
+    {
+      "id": "job_01",
+      "name": "Daily Standup Summary",
+      "agentId": "agent_aria",
+      "agentEmoji": "\ud83c\udfb5",
+      "agentName": "Aria",
+      "schedule": "0 9 * * 1-5",
+      "scheduleHuman": "Weekdays at 9:00 AM",
+      "timezone": "America/New_York",
+      "enabled": true,
+      "lastRunAt": "2026-02-20T09:00:12Z",
+      "lastRunStatus": "success",
+      "nextRunAt": "2026-02-23T09:00:00Z",
+      "instructions": "Summarize yesterday's activity across all channels and post to #standup"
+    },
+    {
+      "id": "job_02",
+      "name": "Weekly Analytics Report",
+      "agentId": "agent_nova",
+      "agentEmoji": "\ud83d\ude80",
+      "agentName": "Nova",
+      "schedule": "0 8 * * 1",
+      "scheduleHuman": "Mondays at 8:00 AM",
+      "timezone": "America/Los_Angeles",
+      "enabled": true,
+      "lastRunAt": "2026-02-17T08:00:05Z",
+      "lastRunStatus": "success",
+      "nextRunAt": "2026-02-24T08:00:00Z",
+      "instructions": "Generate a weekly usage and cost breakdown report and email to the team"
+    },
+    {
+      "id": "job_03",
+      "name": "Hourly Health Check",
+      "agentId": "agent_sentinel",
+      "agentEmoji": "\ud83d\udee1\ufe0f",
+      "agentName": "Sentinel",
+      "schedule": "0 * * * *",
+      "scheduleHuman": "Every hour",
+      "timezone": "UTC",
+      "enabled": true,
+      "lastRunAt": "2026-02-20T14:00:03Z",
+      "lastRunStatus": "success",
+      "nextRunAt": "2026-02-20T15:00:00Z",
+      "instructions": "Ping all connected services and report any failures to #alerts"
+    },
+    {
+      "id": "job_04",
+      "name": "Nightly Data Cleanup",
+      "agentId": "agent_nova",
+      "agentEmoji": "\ud83d\ude80",
+      "agentName": "Nova",
+      "schedule": "30 2 * * *",
+      "scheduleHuman": "Daily at 2:30 AM",
+      "timezone": "America/New_York",
+      "enabled": false,
+      "lastRunAt": "2026-02-15T02:30:08Z",
+      "lastRunStatus": "failed",
+      "nextRunAt": null,
+      "instructions": "Archive activity records older than 90 days and clean up orphaned session data"
+    },
+    {
+      "id": "job_05",
+      "name": "Customer Digest Email",
+      "agentId": "agent_aria",
+      "agentEmoji": "\ud83c\udfb5",
+      "agentName": "Aria",
+      "schedule": "0 7 * * *",
+      "scheduleHuman": "Daily at 7:00 AM",
+      "timezone": "Europe/London",
+      "enabled": true,
+      "lastRunAt": "2026-02-20T07:00:11Z",
+      "lastRunStatus": "success",
+      "nextRunAt": "2026-02-21T07:00:00Z",
+      "instructions": "Compile overnight customer inquiries and send a morning digest to the support team"
+    },
+    {
+      "id": "job_06",
+      "name": "Monthly Cost Alert",
+      "agentId": "agent_sentinel",
+      "agentEmoji": "\ud83d\udee1\ufe0f",
+      "agentName": "Sentinel",
+      "schedule": "0 9 1 * *",
+      "scheduleHuman": "1st of each month at 9:00 AM",
+      "timezone": "America/New_York",
+      "enabled": true,
+      "lastRunAt": "2026-02-01T09:00:07Z",
+      "lastRunStatus": "success",
+      "nextRunAt": "2026-03-01T09:00:00Z",
+      "instructions": "Calculate total API spend for the previous month and alert if it exceeds the budget threshold"
+    },
+    {
+      "id": "job_07",
+      "name": "Slack Channel Sync",
+      "agentId": "agent_link",
+      "agentEmoji": "\ud83d\udd17",
+      "agentName": "Link",
+      "schedule": "*/15 * * * *",
+      "scheduleHuman": "Every 15 minutes",
+      "timezone": "UTC",
+      "enabled": true,
+      "lastRunAt": "2026-02-20T14:45:02Z",
+      "lastRunStatus": "running",
+      "nextRunAt": "2026-02-20T15:00:00Z",
+      "instructions": "Sync new messages from monitored Slack channels into the activity feed"
+    },
+    {
+      "id": "job_08",
+      "name": "Quarterly Review Prep",
+      "agentId": "agent_aria",
+      "agentEmoji": "\ud83c\udfb5",
+      "agentName": "Aria",
+      "schedule": "0 6 1 1,4,7,10 *",
+      "scheduleHuman": "Quarterly on the 1st at 6:00 AM",
+      "timezone": "America/New_York",
+      "enabled": true,
+      "lastRunAt": "2026-01-01T06:00:14Z",
+      "lastRunStatus": "success",
+      "nextRunAt": "2026-04-01T06:00:00Z",
+      "instructions": "Compile a comprehensive summary of agent performance, costs, and key metrics for the quarterly business review"
+    }
+  ],
+  "jobRuns": {
+    "job_01": [
+      { "id": "run_0101", "jobId": "job_01", "startedAt": "2026-02-20T09:00:12Z", "status": "success", "durationMs": 4520 },
+      { "id": "run_0102", "jobId": "job_01", "startedAt": "2026-02-19T09:00:08Z", "status": "success", "durationMs": 3890 },
+      { "id": "run_0103", "jobId": "job_01", "startedAt": "2026-02-18T09:00:10Z", "status": "success", "durationMs": 5120 },
+      { "id": "run_0104", "jobId": "job_01", "startedAt": "2026-02-17T09:00:06Z", "status": "failed", "durationMs": 1230 },
+      { "id": "run_0105", "jobId": "job_01", "startedAt": "2026-02-14T09:00:09Z", "status": "success", "durationMs": 4100 }
+    ],
+    "job_03": [
+      { "id": "run_0301", "jobId": "job_03", "startedAt": "2026-02-20T14:00:03Z", "status": "success", "durationMs": 1120 },
+      { "id": "run_0302", "jobId": "job_03", "startedAt": "2026-02-20T13:00:02Z", "status": "success", "durationMs": 980 },
+      { "id": "run_0303", "jobId": "job_03", "startedAt": "2026-02-20T12:00:04Z", "status": "success", "durationMs": 1050 },
+      { "id": "run_0304", "jobId": "job_03", "startedAt": "2026-02-20T11:00:02Z", "status": "success", "durationMs": 1200 },
+      { "id": "run_0305", "jobId": "job_03", "startedAt": "2026-02-20T10:00:03Z", "status": "failed", "durationMs": 30120 },
+      { "id": "run_0306", "jobId": "job_03", "startedAt": "2026-02-20T09:00:01Z", "status": "success", "durationMs": 1080 }
+    ],
+    "job_04": [
+      { "id": "run_0401", "jobId": "job_04", "startedAt": "2026-02-15T02:30:08Z", "status": "failed", "durationMs": 62000 },
+      { "id": "run_0402", "jobId": "job_04", "startedAt": "2026-02-14T02:30:05Z", "status": "success", "durationMs": 45200 },
+      { "id": "run_0403", "jobId": "job_04", "startedAt": "2026-02-13T02:30:06Z", "status": "success", "durationMs": 43800 }
+    ],
+    "job_07": [
+      { "id": "run_0701", "jobId": "job_07", "startedAt": "2026-02-20T14:45:02Z", "status": "running", "durationMs": null },
+      { "id": "run_0702", "jobId": "job_07", "startedAt": "2026-02-20T14:30:01Z", "status": "success", "durationMs": 2340 },
+      { "id": "run_0703", "jobId": "job_07", "startedAt": "2026-02-20T14:15:02Z", "status": "success", "durationMs": 2180 },
+      { "id": "run_0704", "jobId": "job_07", "startedAt": "2026-02-20T14:00:01Z", "status": "success", "durationMs": 2450 },
+      { "id": "run_0705", "jobId": "job_07", "startedAt": "2026-02-20T13:45:02Z", "status": "success", "durationMs": 2290 }
+    ],
+    "job_02": [],
+    "job_05": [
+      { "id": "run_0501", "jobId": "job_05", "startedAt": "2026-02-20T07:00:11Z", "status": "success", "durationMs": 8900 },
+      { "id": "run_0502", "jobId": "job_05", "startedAt": "2026-02-19T07:00:09Z", "status": "success", "durationMs": 9200 },
+      { "id": "run_0503", "jobId": "job_05", "startedAt": "2026-02-18T07:00:07Z", "status": "success", "durationMs": 7800 },
+      { "id": "run_0504", "jobId": "job_05", "startedAt": "2026-02-17T07:00:10Z", "status": "success", "durationMs": 8500 },
+      { "id": "run_0505", "jobId": "job_05", "startedAt": "2026-02-16T07:00:08Z", "status": "failed", "durationMs": 2100 }
+    ],
+    "job_06": [
+      { "id": "run_0601", "jobId": "job_06", "startedAt": "2026-02-01T09:00:07Z", "status": "success", "durationMs": 12400 },
+      { "id": "run_0602", "jobId": "job_06", "startedAt": "2026-01-01T09:00:05Z", "status": "success", "durationMs": 11800 }
+    ],
+    "job_08": [
+      { "id": "run_0801", "jobId": "job_08", "startedAt": "2026-01-01T06:00:14Z", "status": "success", "durationMs": 34500 }
+    ]
+  }
+}

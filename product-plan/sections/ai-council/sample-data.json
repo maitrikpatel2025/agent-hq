@@ -1,0 +1,232 @@
+{
+  "_meta": {
+    "models": {
+      "CouncilSession": "A strategic debate session where multiple agents weigh in on a topic. Includes the prompt, configuration, participating agents, debate messages, and a synthesized summary.",
+      "CouncilMessage": "A single message in a council debate thread, attributed to a specific agent with timestamp.",
+      "CouncilSynthesis": "An auto-generated summary produced at the end of a completed session, highlighting key points, areas of agreement/disagreement, and a recommended action.",
+      "Agent": "A participating AI agent identified by emoji, name, and role."
+    },
+    "relationships": [
+      "CouncilSession has many CouncilMessage (the debate thread)",
+      "CouncilSession has one CouncilSynthesis (generated on completion)",
+      "CouncilSession has many Agent (participants)",
+      "CouncilMessage belongs to one Agent"
+    ]
+  },
+  "agents": [
+    { "id": "agent-1", "emoji": "🦊", "name": "Koda", "role": "Strategy Lead", "model": "claude-sonnet-4-5-20250929" },
+    { "id": "agent-2", "emoji": "🐙", "name": "Marlo", "role": "Research Analyst", "model": "gpt-4o" },
+    { "id": "agent-3", "emoji": "🦉", "name": "Sage", "role": "Risk Advisor", "model": "claude-sonnet-4-5-20250929" },
+    { "id": "agent-4", "emoji": "🐺", "name": "Rex", "role": "Growth Hacker", "model": "gpt-4o-mini" },
+    { "id": "agent-5", "emoji": "🦅", "name": "Aria", "role": "Product Strategist", "model": "claude-haiku-4-5-20251001" }
+  ],
+  "sessions": [
+    {
+      "id": "session-1",
+      "topic": "Should we pivot from B2B SaaS to a developer-first open-source model?",
+      "format": "round-table",
+      "status": "completed",
+      "createdAt": "2026-02-18T14:30:00Z",
+      "completedAt": "2026-02-18T14:35:22Z",
+      "participantIds": ["agent-1", "agent-2", "agent-3", "agent-4", "agent-5"],
+      "messages": [
+        {
+          "id": "msg-1",
+          "agentId": "agent-1",
+          "content": "Pivoting to open-source could dramatically expand our top-of-funnel, but we need to be honest about the revenue implications. Our current B2B contracts account for 78% of ARR. I'd recommend a hybrid approach — open-source the core SDK while keeping the managed platform as the commercial offering. This lets us capture developer mindshare without torching existing revenue.",
+          "timestamp": "2026-02-18T14:31:05Z"
+        },
+        {
+          "id": "msg-2",
+          "agentId": "agent-2",
+          "content": "The data supports caution here. Looking at comparable pivots — HashiCorp, Elastic, MongoDB — the open-source-to-commercial pipeline takes 18-24 months to mature. Our current runway is 14 months. The market for developer tools is also crowded; 340 new dev-tool startups launched in Q4 alone. If we go open-source, we need a differentiated hook that isn't just 'free version of our paid thing.'",
+          "timestamp": "2026-02-18T14:31:48Z"
+        },
+        {
+          "id": "msg-3",
+          "agentId": "agent-3",
+          "content": "I have to flag several risks. First, open-sourcing our core IP means competitors can fork it — we've seen this play out with Redis and their licensing drama. Second, our enterprise clients chose us partly for the closed-source security posture; a pivot could trigger churn. Third, community management is a full-time discipline we don't currently staff for. The downside scenario is: we lose enterprise deals, burn runway on community building, and end up with a popular GitHub repo but no business.",
+          "timestamp": "2026-02-18T14:32:30Z"
+        },
+        {
+          "id": "msg-4",
+          "agentId": "agent-4",
+          "content": "Counterpoint to the doom and gloom — our organic growth has flatlined at 3% MoM for two quarters. The B2B sales cycle is 90+ days and we're losing deals to open-source alternatives already. Going open-source isn't just an option, it might be survival. I'd launch a free tier immediately, open-source the agent SDK, and run a Product Hunt campaign. We could realistically hit 5,000 GitHub stars in the first month if we nail the developer experience.",
+          "timestamp": "2026-02-18T14:33:15Z"
+        },
+        {
+          "id": "msg-5",
+          "agentId": "agent-5",
+          "content": "Both sides have merit, but I think we're framing this as binary when it doesn't need to be. The real question is: what layer do we open-source? I'd open-source the agent orchestration primitives — the scheduling, routing, and skill system — while keeping the management dashboard, analytics, and multi-tenant platform proprietary. This gives developers a reason to adopt us while preserving our moat. We should also consider a BSL license instead of full MIT to prevent cloud providers from competing with a hosted fork.",
+          "timestamp": "2026-02-18T14:34:02Z"
+        }
+      ],
+      "synthesis": {
+        "summary": "The council reached partial consensus on a hybrid approach rather than a full pivot. Most agents agree that pure B2B is losing momentum, but a complete open-source pivot carries significant financial and competitive risks given current runway constraints.",
+        "agreements": [
+          "Current B2B growth has stalled and the status quo is not sustainable",
+          "A hybrid model (open-source core, commercial platform) is preferable to a full pivot",
+          "Developer experience must be the primary differentiator if any open-source path is pursued"
+        ],
+        "disagreements": [
+          "Timeline urgency — Growth sees this as an immediate survival move; Risk wants more runway before committing",
+          "Scope of open-sourcing — ranges from 'just the SDK' to 'full orchestration layer'",
+          "Licensing strategy — MIT vs BSL vs proprietary with free tier"
+        ],
+        "recommendation": "Pursue a phased hybrid approach: open-source the agent SDK under BSL license within 60 days while maintaining all enterprise contracts. Use the open-source launch to generate developer awareness, then convert engaged developers to the managed platform. Revisit full open-source of the orchestration layer after 6 months based on adoption metrics."
+      }
+    },
+    {
+      "id": "session-2",
+      "topic": "What's our hiring priority for Q2 — engineering, sales, or developer relations?",
+      "format": "structured-debate",
+      "status": "completed",
+      "createdAt": "2026-02-15T10:00:00Z",
+      "completedAt": "2026-02-15T10:06:45Z",
+      "participantIds": ["agent-1", "agent-3", "agent-4"],
+      "messages": [
+        {
+          "id": "msg-6",
+          "agentId": "agent-1",
+          "content": "Q2 hiring should focus on engineering. We have 14 open feature requests from paying customers and our deployment velocity has dropped 30% since November. Two senior engineers would unblock the pipeline integration work that three enterprise prospects are waiting on. Revenue impact is direct and measurable.",
+          "timestamp": "2026-02-15T10:01:30Z"
+        },
+        {
+          "id": "msg-7",
+          "agentId": "agent-4",
+          "content": "Hard disagree. Engineering can ship faster with better tooling — we don't need more hands, we need more reach. A developer relations hire would create content, run workshops, and build the community pipeline we've been neglecting. One great DevRel person generates more qualified leads than two SDRs. Plus, they can dogfood the product and file better bug reports than any QA engineer.",
+          "timestamp": "2026-02-15T10:02:45Z"
+        },
+        {
+          "id": "msg-8",
+          "agentId": "agent-3",
+          "content": "Before we hire anyone, we should address retention. We've lost two engineers in the last quarter and exit interviews cited unclear roadmap and technical debt. Hiring into a leaky bucket is wasteful. I'd prioritize one senior engineering hire to stabilize the team, then invest in DevRel for Q3 once the product is more stable. Sales hiring should wait until we have a repeatable playbook.",
+          "timestamp": "2026-02-15T10:03:50Z"
+        }
+      ],
+      "synthesis": {
+        "summary": "The council agreed that engineering capacity is the most pressing constraint but differed on whether to address it through hiring or process improvement. DevRel was seen as high-impact but premature given current product stability concerns.",
+        "agreements": [
+          "Sales hiring should not be the Q2 priority",
+          "Engineering capacity is currently the bottleneck",
+          "Retention issues must be addressed alongside any new hiring"
+        ],
+        "disagreements": [
+          "Whether to hire engineers or invest in developer relations first",
+          "Whether the product is stable enough to amplify through DevRel"
+        ],
+        "recommendation": "Hire one senior engineer in Q2 focused on the pipeline integration work blocking enterprise deals. Simultaneously address retention by clarifying the technical roadmap. Begin DevRel hiring process in late Q2 for a Q3 start, ensuring the product is stable enough to showcase."
+      }
+    },
+    {
+      "id": "session-3",
+      "topic": "Should we add real-time collaboration features or double down on async workflows?",
+      "format": "round-table",
+      "status": "in-progress",
+      "createdAt": "2026-02-20T09:15:00Z",
+      "completedAt": null,
+      "participantIds": ["agent-1", "agent-2", "agent-5"],
+      "messages": [
+        {
+          "id": "msg-9",
+          "agentId": "agent-2",
+          "content": "The usage data tells a clear story: 89% of our users work solo and only 11% have ever shared a workspace. Real-time collab is engineering-expensive (WebSockets, conflict resolution, presence indicators) and serves a minority use case. Our async workflows — scheduled runs, queue-based tasks, batch processing — are what users actually rely on daily. I'd invest in making async even better: better notifications, smarter scheduling, and richer run history.",
+          "timestamp": "2026-02-20T09:16:20Z"
+        },
+        {
+          "id": "msg-10",
+          "agentId": "agent-1",
+          "content": "Marlo's data is accurate but backward-looking. The enterprise prospects we're talking to all ask about team features. Three of our last five lost deals cited 'lack of collaboration' as a factor. The 11% who share workspaces are also our highest-value accounts. I think we need a minimal real-time layer — shared cursors and live session viewing — without rebuilding the whole product around it.",
+          "timestamp": "2026-02-20T09:17:45Z"
+        }
+      ],
+      "synthesis": null
+    },
+    {
+      "id": "session-4",
+      "topic": "Evaluate the risk of depending on a single LLM provider vs. multi-model strategy",
+      "format": "round-table",
+      "status": "completed",
+      "createdAt": "2026-02-10T16:00:00Z",
+      "completedAt": "2026-02-10T16:05:30Z",
+      "participantIds": ["agent-2", "agent-3"],
+      "messages": [
+        {
+          "id": "msg-11",
+          "agentId": "agent-3",
+          "content": "Single-provider dependency is a critical business risk. If Anthropic has an outage — which has happened three times in the last quarter — our entire platform goes down. Price increases are also unilateral; OpenAI raised API prices twice in 2025. A multi-model architecture adds complexity but provides negotiating leverage, redundancy, and the ability to route tasks to the most cost-effective model.",
+          "timestamp": "2026-02-10T16:01:30Z"
+        },
+        {
+          "id": "msg-12",
+          "agentId": "agent-2",
+          "content": "Agreed on the risk, but the complexity cost is real. Supporting multiple models means maintaining prompt variants, handling different token limits and pricing structures, and testing across providers. Our current team of four engineers would spend 30% of their time on model compatibility alone. My recommendation: abstract the model layer now with a clean interface, support two providers (Anthropic + OpenAI) as primary and fallback, and defer broader multi-model support until the team scales.",
+          "timestamp": "2026-02-10T16:03:00Z"
+        }
+      ],
+      "synthesis": {
+        "summary": "Both agents strongly agreed that single-provider dependency is an unacceptable risk. The debate centered on how aggressively to pursue multi-model support given engineering constraints.",
+        "agreements": [
+          "Single-provider dependency poses unacceptable business continuity and pricing risks",
+          "A clean abstraction layer should be implemented regardless of timeline",
+          "Two-provider support (Anthropic + OpenAI) is the pragmatic minimum"
+        ],
+        "disagreements": [],
+        "recommendation": "Implement a model abstraction layer immediately and add OpenAI as a secondary provider within 30 days. Configure automatic failover for outages and enable per-agent model selection. Defer support for additional providers until Q3."
+      }
+    },
+    {
+      "id": "session-5",
+      "topic": "How should we handle agent memory and context persistence across sessions?",
+      "format": "structured-debate",
+      "status": "completed",
+      "createdAt": "2026-02-08T11:30:00Z",
+      "completedAt": "2026-02-08T11:36:10Z",
+      "participantIds": ["agent-1", "agent-2", "agent-3", "agent-5"],
+      "messages": [
+        {
+          "id": "msg-13",
+          "agentId": "agent-5",
+          "content": "Context persistence is the single biggest factor in agent usefulness. Without memory, every session starts cold and the user has to re-explain context. I'd implement a three-tier memory system: short-term (current session context), medium-term (recent session summaries auto-generated after each run), and long-term (user-curated knowledge base per agent). The agent should automatically pull relevant medium-term context at session start.",
+          "timestamp": "2026-02-08T11:31:20Z"
+        },
+        {
+          "id": "msg-14",
+          "agentId": "agent-2",
+          "content": "The three-tier model is elegant but expensive. Each memory retrieval adds latency and token cost. At scale — 50 agents, 200 sessions/day — we're talking about significant embedding and retrieval overhead. I'd start simpler: a structured context file per agent (markdown, user-editable) that gets prepended to every prompt. No vector search, no auto-summarization. Users can manually update it. This covers 80% of the value at 10% of the complexity.",
+          "timestamp": "2026-02-08T11:32:40Z"
+        },
+        {
+          "id": "msg-15",
+          "agentId": "agent-3",
+          "content": "Both approaches have data privacy implications we need to address. Persistent agent memory means we're storing conversation history, potentially including sensitive business data, API keys mentioned in context, and personal information. We need: encryption at rest, user-controlled deletion, clear retention policies, and opt-out capability. Whatever architecture we choose, privacy controls must be built in from day one, not bolted on later.",
+          "timestamp": "2026-02-08T11:33:55Z"
+        },
+        {
+          "id": "msg-16",
+          "agentId": "agent-1",
+          "content": "I'm splitting the difference. Start with Marlo's simple context-file approach for the MVP — it ships in a week and gives us real user feedback. But architect it behind an interface that can swap in the three-tier system later. Aria's right that full memory is the end goal, and Sage's right that we need privacy controls from the start. The context file should be encrypted and deletable even in v1.",
+          "timestamp": "2026-02-08T11:35:00Z"
+        }
+      ],
+      "synthesis": {
+        "summary": "The council converged on a phased approach to agent memory. All agents agreed that context persistence is critical for usability, but differed on initial implementation complexity. Privacy controls were unanimously identified as a non-negotiable requirement.",
+        "agreements": [
+          "Context persistence dramatically improves agent usefulness and should be prioritized",
+          "Privacy controls (encryption, deletion, retention policies) must be built in from v1",
+          "A clean abstraction layer allows starting simple and upgrading later"
+        ],
+        "disagreements": [
+          "Initial complexity — simple context files vs. three-tier memory system",
+          "Whether auto-summarization is worth the latency and cost tradeoff"
+        ],
+        "recommendation": "Ship a structured context-file system per agent within one week, with encryption at rest and user-controlled deletion. Design the interface to support future upgrade to vector-based retrieval. Collect usage data for 60 days, then evaluate whether auto-summarization and tiered memory justify the additional complexity and cost."
+      }
+    }
+  ],
+  "debateFormats": [
+    { "id": "round-table", "label": "Round Table", "description": "All agents respond freely in turn, building on each other's points" },
+    { "id": "structured-debate", "label": "Structured Debate", "description": "Agents present positions, then respond to counterarguments" },
+    { "id": "devils-advocate", "label": "Devil's Advocate", "description": "One agent is assigned to argue against the majority position" }
+  ]
+}

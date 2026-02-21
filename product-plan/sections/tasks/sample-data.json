@@ -1,0 +1,121 @@
+{
+  "_meta": {
+    "models": {
+      "Task": "A one-off assignment for an agent with status, priority, due date, and description. Managed on a Kanban board.",
+      "Agent": "A reference to an AI agent (id, emoji, name) used to show who a task is assigned to."
+    },
+    "relationships": [
+      "Each Task is optionally assigned to one Agent",
+      "Tasks are organized into columns by status: scheduled, queue, in-progress, done"
+    ]
+  },
+  "agents": [
+    { "id": "agent-1", "emoji": "🦊", "name": "Kitsune" },
+    { "id": "agent-2", "emoji": "🐙", "name": "Octavia" },
+    { "id": "agent-3", "emoji": "🦉", "name": "Athena" },
+    { "id": "agent-4", "emoji": "🐺", "name": "Fenrir" },
+    { "id": "agent-5", "emoji": "🤖", "name": "Nova" }
+  ],
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Summarize weekly Slack highlights",
+      "description": "Pull the top conversations and announcements from #general and #engineering channels for the past 7 days and produce a concise digest.",
+      "status": "scheduled",
+      "priority": "medium",
+      "assignedAgentId": "agent-1",
+      "dueDate": "2026-02-23T09:00:00Z",
+      "createdAt": "2026-02-18T14:22:00Z"
+    },
+    {
+      "id": "task-2",
+      "title": "Audit landing page copy for tone",
+      "description": "Review the marketing landing page and flag any sections that don't match our brand voice guidelines. Suggest rewrites where needed.",
+      "status": "scheduled",
+      "priority": "low",
+      "assignedAgentId": "agent-3",
+      "dueDate": "2026-02-25T17:00:00Z",
+      "createdAt": "2026-02-19T09:10:00Z"
+    },
+    {
+      "id": "task-3",
+      "title": "Generate API changelog draft",
+      "description": "Compare the last two API releases and write a developer-facing changelog entry with breaking changes highlighted.",
+      "status": "queue",
+      "priority": "high",
+      "assignedAgentId": "agent-2",
+      "dueDate": "2026-02-21T12:00:00Z",
+      "createdAt": "2026-02-17T11:30:00Z"
+    },
+    {
+      "id": "task-4",
+      "title": "Research competitor pricing updates",
+      "description": "Check the pricing pages of our top 5 competitors and compile a comparison table noting any changes from last quarter.",
+      "status": "queue",
+      "priority": "medium",
+      "assignedAgentId": "agent-4",
+      "dueDate": null,
+      "createdAt": "2026-02-19T16:45:00Z"
+    },
+    {
+      "id": "task-5",
+      "title": "Draft onboarding email sequence",
+      "description": "Write a 3-email welcome sequence for new users: Day 0 welcome, Day 2 feature highlight, Day 5 tips & tricks. Keep each under 200 words.",
+      "status": "in-progress",
+      "priority": "high",
+      "assignedAgentId": "agent-1",
+      "dueDate": "2026-02-20T18:00:00Z",
+      "createdAt": "2026-02-16T08:00:00Z"
+    },
+    {
+      "id": "task-6",
+      "title": "Translate FAQ page to Spanish",
+      "description": "Translate all 12 FAQ entries to Spanish, maintaining the same friendly tone. Preserve formatting and links.",
+      "status": "in-progress",
+      "priority": "medium",
+      "assignedAgentId": "agent-5",
+      "dueDate": "2026-02-22T15:00:00Z",
+      "createdAt": "2026-02-18T10:20:00Z"
+    },
+    {
+      "id": "task-7",
+      "title": "Classify support tickets from last week",
+      "description": "",
+      "status": "in-progress",
+      "priority": "low",
+      "assignedAgentId": "agent-2",
+      "dueDate": null,
+      "createdAt": "2026-02-19T13:00:00Z"
+    },
+    {
+      "id": "task-8",
+      "title": "Write unit test descriptions for auth module",
+      "description": "Generate human-readable test case descriptions for all public methods in the authentication module. Output as a markdown checklist.",
+      "status": "done",
+      "priority": "high",
+      "assignedAgentId": "agent-3",
+      "dueDate": "2026-02-19T12:00:00Z",
+      "createdAt": "2026-02-15T09:00:00Z"
+    },
+    {
+      "id": "task-9",
+      "title": "Produce social media post batch",
+      "description": "Create 10 short-form social media posts promoting our new analytics dashboard feature. Mix of LinkedIn and Twitter formats.",
+      "status": "done",
+      "priority": "medium",
+      "assignedAgentId": "agent-4",
+      "dueDate": "2026-02-18T17:00:00Z",
+      "createdAt": "2026-02-14T11:30:00Z"
+    },
+    {
+      "id": "task-10",
+      "title": "Scan docs for broken links",
+      "description": "Crawl all pages in our documentation site and report any broken internal or external links with their locations.",
+      "status": "done",
+      "priority": "low",
+      "assignedAgentId": null,
+      "dueDate": null,
+      "createdAt": "2026-02-13T15:45:00Z"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "_meta": {
+    "models": {
+      "skill": "A capability available to agents, such as weather lookup or Slack integration. Has a global enable/disable state and per-agent assignment.",
+      "agent": "A minimal agent reference used for skill assignment — just enough to show identity and toggle state."
+    },
+    "relationships": [
+      "A skill can be assigned to many agents",
+      "An agent can have many skills enabled"
+    ]
+  },
+  "skills": [
+    {
+      "id": "skill-001",
+      "name": "Weather Lookup",
+      "description": "Fetch current weather conditions and forecasts for any city worldwide using the OpenWeatherMap API.",
+      "enabled": true,
+      "agentIds": ["agent-001", "agent-003", "agent-005"]
+    },
+    {
+      "id": "skill-002",
+      "name": "Slack Messaging",
+      "description": "Send messages, reply to threads, and post rich blocks to any Slack channel or DM the agent is bound to.",
+      "enabled": true,
+      "agentIds": ["agent-001", "agent-002", "agent-004"]
+    },
+    {
+      "id": "skill-003",
+      "name": "Web Search",
+      "description": "Perform web searches via the Brave Search API and return summarized results with source links.",
+      "enabled": true,
+      "agentIds": ["agent-001", "agent-002", "agent-003", "agent-004", "agent-005"]
+    },
+    {
+      "id": "skill-004",
+      "name": "GitHub Issues",
+      "description": "Create, read, update, and comment on GitHub issues across configured repositories.",
+      "enabled": false,
+      "agentIds": []
+    },
+    {
+      "id": "skill-005",
+      "name": "Calendar Events",
+      "description": "Read and create Google Calendar events, check availability, and send meeting invites on behalf of the user.",
+      "enabled": true,
+      "agentIds": ["agent-002"]
+    },
+    {
+      "id": "skill-006",
+      "name": "Image Generation",
+      "description": "Generate images from text prompts using DALL-E 3, returning URLs or base64-encoded output.",
+      "enabled": true,
+      "agentIds": ["agent-003", "agent-005"]
+    },
+    {
+      "id": "skill-007",
+      "name": "SQL Query",
+      "description": "Execute read-only SQL queries against configured PostgreSQL or SQLite databases and return formatted results.",
+      "enabled": false,
+      "agentIds": ["agent-004"]
+    },
+    {
+      "id": "skill-008",
+      "name": "Email Send",
+      "description": "Compose and send emails via SendGrid with support for HTML templates, attachments, and CC/BCC recipients.",
+      "enabled": true,
+      "agentIds": ["agent-001", "agent-002"]
+    }
+  ],
+  "agents": [
+    {
+      "id": "agent-001",
+      "emoji": "\ud83e\udd89",
+      "name": "Archie",
+      "role": "General Assistant"
+    },
+    {
+      "id": "agent-002",
+      "emoji": "\ud83d\udc1d",
+      "name": "Benny",
+      "role": "Scheduler"
+    },
+    {
+      "id": "agent-003",
+      "emoji": "\ud83c\udf1f",
+      "name": "Stella",
+      "role": "Creative Director"
+    },
+    {
+      "id": "agent-004",
+      "emoji": "\ud83d\udd27",
+      "name": "Gizmo",
+      "role": "DevOps Engineer"
+    },
+    {
+      "id": "agent-005",
+      "emoji": "\ud83c\udfaf",
+      "name": "Dart",
+      "role": "Research Analyst"
+    }
+  ]
+}

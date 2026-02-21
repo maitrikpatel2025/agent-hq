@@ -1,0 +1,170 @@
+{
+  "_meta": {
+    "models": {
+      "DashboardAgent": "Compact agent summary for the status grid — name, role, model, and current status.",
+      "ActivityItem": "A recent agent response shown in the activity feed with agent attribution and snippet.",
+      "CostSummary": "Today's total API spend with a comparison delta to yesterday.",
+      "ScheduledJobPreview": "An upcoming scheduled job showing name, assigned agent, and next run time.",
+      "PipelineStatus": "Task counts grouped by kanban column for the pipeline widget.",
+      "QuickAction": "A shortcut button for common operations available from the dashboard."
+    },
+    "relationships": [
+      "ActivityItem references a DashboardAgent by agentName",
+      "ScheduledJobPreview references a DashboardAgent by agentName",
+      "PipelineStatus is an aggregate of Task entities from the Tasks section"
+    ]
+  },
+  "agents": [
+    {
+      "id": "agent-001",
+      "name": "Atlas",
+      "role": "Operations Lead",
+      "model": "claude-sonnet-4-5-20250929",
+      "status": "online"
+    },
+    {
+      "id": "agent-002",
+      "name": "Nova",
+      "role": "Content Strategist",
+      "model": "gpt-4o",
+      "status": "busy"
+    },
+    {
+      "id": "agent-003",
+      "name": "Cipher",
+      "role": "DevOps Engineer",
+      "model": "claude-sonnet-4-5-20250929",
+      "status": "online"
+    },
+    {
+      "id": "agent-004",
+      "name": "Sage",
+      "role": "Research Analyst",
+      "model": "gpt-4o-mini",
+      "status": "offline"
+    },
+    {
+      "id": "agent-005",
+      "name": "Pulse",
+      "role": "Community Manager",
+      "model": "claude-haiku-4-5-20251001",
+      "status": "online"
+    },
+    {
+      "id": "agent-006",
+      "name": "Forge",
+      "role": "Full-Stack Developer",
+      "model": "claude-sonnet-4-5-20250929",
+      "status": "busy"
+    }
+  ],
+  "recentActivity": [
+    {
+      "id": "act-101",
+      "agentName": "Atlas",
+      "timestamp": "2026-02-20T14:32:00Z",
+      "snippet": "Completed daily ops report — 3 incidents resolved, 0 open alerts."
+    },
+    {
+      "id": "act-102",
+      "agentName": "Nova",
+      "timestamp": "2026-02-20T14:28:00Z",
+      "snippet": "Published weekly newsletter draft to #content-review for approval."
+    },
+    {
+      "id": "act-103",
+      "agentName": "Forge",
+      "timestamp": "2026-02-20T14:15:00Z",
+      "snippet": "Deployed hotfix for authentication timeout issue to staging environment."
+    },
+    {
+      "id": "act-104",
+      "agentName": "Cipher",
+      "timestamp": "2026-02-20T13:58:00Z",
+      "snippet": "Rotated API keys for production gateway. All services healthy."
+    },
+    {
+      "id": "act-105",
+      "agentName": "Pulse",
+      "timestamp": "2026-02-20T13:42:00Z",
+      "snippet": "Responded to 12 community questions in #support channel."
+    },
+    {
+      "id": "act-106",
+      "agentName": "Atlas",
+      "timestamp": "2026-02-20T13:20:00Z",
+      "snippet": "Escalated billing anomaly to ops team — usage spike detected on agent-004."
+    },
+    {
+      "id": "act-107",
+      "agentName": "Sage",
+      "timestamp": "2026-02-20T12:05:00Z",
+      "snippet": "Finished competitive analysis report covering 4 new market entrants. Report is 2,400 words with executive summary and recommendations."
+    }
+  ],
+  "costSummary": {
+    "todayTotal": 14.87,
+    "yesterdayTotal": 18.23,
+    "currency": "USD",
+    "topAgent": {
+      "name": "Forge",
+      "amount": 5.42
+    }
+  },
+  "upcomingJobs": [
+    {
+      "id": "job-201",
+      "name": "Daily Ops Report",
+      "agentName": "Atlas",
+      "nextRunAt": "2026-02-21T08:00:00Z",
+      "enabled": true
+    },
+    {
+      "id": "job-202",
+      "name": "Content Calendar Sync",
+      "agentName": "Nova",
+      "nextRunAt": "2026-02-21T09:30:00Z",
+      "enabled": true
+    },
+    {
+      "id": "job-203",
+      "name": "Infrastructure Health Check",
+      "agentName": "Cipher",
+      "nextRunAt": "2026-02-21T06:00:00Z",
+      "enabled": true
+    },
+    {
+      "id": "job-204",
+      "name": "Weekly Research Digest",
+      "agentName": "Sage",
+      "nextRunAt": "2026-02-23T10:00:00Z",
+      "enabled": false
+    }
+  ],
+  "pipeline": {
+    "scheduled": 3,
+    "queue": 5,
+    "inProgress": 2,
+    "done": 18
+  },
+  "quickActions": [
+    {
+      "id": "qa-1",
+      "label": "Dispatch Task",
+      "description": "Assign a one-off task to an agent",
+      "targetSection": "tasks"
+    },
+    {
+      "id": "qa-2",
+      "label": "Start Council",
+      "description": "Open a multi-agent debate session",
+      "targetSection": "ai-council"
+    },
+    {
+      "id": "qa-3",
+      "label": "Create Job",
+      "description": "Schedule a recurring job for an agent",
+      "targetSection": "jobs"
+    }
+  ]
+}
