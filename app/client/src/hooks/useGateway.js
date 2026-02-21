@@ -10,6 +10,6 @@ export function useGateway() {
 }
 
 export function useGatewayStatus() {
-  const { status, isConnected, isConnecting } = useGateway()
-  return { status, isConnected, isConnecting }
+  const { status, isConnected, isConnecting, lastHeartbeat } = useGateway()
+  return { status, isConnected, isConnecting, lastHeartbeat }
 }

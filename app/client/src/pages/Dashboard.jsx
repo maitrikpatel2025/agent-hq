@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useGateway } from '../hooks/useGateway'
 import { fetchAgents, fetchSessions, fetchSessionsUsage, fetchJobs } from '../services/gateway'
 import { Loader2, Users, Activity, BarChart3, Clock } from 'lucide-react'
+import HealthMonitoringWidget from '../components/HealthMonitoringWidget'
 
 function SectionCard({ title, icon: Icon, children }) {
   return (
@@ -84,6 +85,11 @@ export default function Dashboard() {
       <p className="text-stone-500 dark:text-stone-400 mt-1 mb-6">At-a-glance system overview.</p>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {/* Gateway Health Monitoring */}
+        <div className="col-span-1 lg:col-span-2">
+          <HealthMonitoringWidget />
+        </div>
+
         {/* Agent Status */}
         <SectionCard title="Agents" icon={Users}>
           {!isConnected ? (
