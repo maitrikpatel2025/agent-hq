@@ -11,6 +11,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from gateway_client import gateway_client
+from dashboard_routes import router as dashboard_router
 from gateway_routes import router as gateway_router
 
 logging.basicConfig(
@@ -46,8 +47,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include gateway routes
+# Include routes
 app.include_router(gateway_router)
+app.include_router(dashboard_router)
 
 
 @app.get("/api/test")
