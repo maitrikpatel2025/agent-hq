@@ -6,7 +6,7 @@ Execute comprehensive validation tests for both frontend and backend components,
 
 Proactively identify and fix issues in the application before they impact users or developers. By running this comprehensive test suite, you can:
 - Detect syntax errors, type mismatches, and import failures
-- Identify broken tests or security vulnerabilities
+- Identify broken tests or security vulnerabilities  
 - Verify build processes and dependencies
 - Ensure the application is in a healthy state
 
@@ -29,6 +29,10 @@ TEST_COMMAND_TIMEOUT: 5 minutes
   - Capture stderr output for error field
   - Timeout commands after `TEST_COMMAND_TIMEOUT`
   - IMPORTANT: If a test fails, stop processing tests and return the results thus far
+- Some tests may have dependencies (e.g., server must be stopped for port availability)
+- API health check is required
+- Test execution order is important - dependencies should be validated first
+- All file paths are relative to the project root
 - Always run `pwd` and `cd` before each test to ensure you're operating in the correct directory for the given test
 
 ## Test Execution Sequence
@@ -36,32 +40,44 @@ TEST_COMMAND_TIMEOUT: 5 minutes
 ### Backend Tests
 
 1. **Python Syntax Check**
-   - Command: `cd app/server && uv run python -m py_compile server.py`
+   - Preparation Command: None
+   - Command: `cd app/server && uv run python -m py_compile server.py gateway_client.py gateway_routes.py gateway_models.py`
    - test_name: "python_syntax_check"
-   - test_purpose: "Validates Python syntax by compiling source files to bytecode"
+   - test_purpose: "Validates Python syntax by compiling source files to bytecode, catching syntax errors like missing colons, invalid indentation, or malformed statements"
 
 2. **Backend Code Quality Check**
+   - Preparation Command: None
    - Command: `cd app/server && uv run ruff check .`
    - test_name: "backend_linting"
    - test_purpose: "Validates Python code quality, identifies unused imports, style violations, and potential bugs"
 
 3. **All Backend Tests**
+   - Preparation Command: None
    - Command: `cd app/server && uv run pytest tests/ -v --tb=short`
    - test_name: "all_backend_tests"
-   - test_purpose: "Validates all backend functionality"
+   - test_purpose: "Validates all backend functionality including file processing, SQL security, LLM integration, and API endpoints"
 
 ### Frontend Tests
 
-4. **Frontend Build**
+4. **Frontend Lint Check**
+   - Preparation Command: None
+   - Command: `cd app/client && npx eslint src/ --max-warnings=0 --quiet`
+   - test_name: "frontend_lint_check"
+   - test_purpose: "Validates JavaScript/JSX code quality and catches common errors, unused imports, and incorrect patterns"
+
+5. **Frontend Build**
+   - Preparation Command: None
    - Command: `cd app/client && npm run build`
    - test_name: "frontend_build"
-   - test_purpose: "Validates the complete frontend build process including bundling and production compilation"
+   - test_purpose: "Validates the complete frontend build process including bundling, asset optimization, and production compilation"
 
 ## Report
 
 - IMPORTANT: Return results exclusively as a JSON array based on the `Output Structure` section below.
 - Sort the JSON array with failed tests (passed: false) at the top
 - Include all tests in the output, both passed and failed
+- The execution_command field should contain the exact command that can be run to reproduce the test
+- This allows subsequent agents to quickly identify and resolve errors
 
 ### Output Structure
 
@@ -75,5 +91,25 @@ TEST_COMMAND_TIMEOUT: 5 minutes
     "error": "optional string"
   },
   ...
+]
+```
+
+### Example Output
+
+```json
+[
+  {
+    "test_name": "frontend_build",
+    "passed": false,
+    "execution_command": "cd app/client && npm run build",
+    "test_purpose": "Validates TypeScript compilation, module resolution, and production build process for the frontend application",
+    "error": "TS2345: Argument of type 'string' is not assignable to parameter of type 'number'"
+  },
+  {
+    "test_name": "all_backend_tests",
+    "passed": true,
+    "execution_command": "cd app/server && uv run pytest tests/ -v --tb=short",
+    "test_purpose": "Validates all backend functionality including file processing, SQL security, LLM integration, and API endpoints"
+  }
 ]
 ```

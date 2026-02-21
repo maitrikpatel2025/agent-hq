@@ -3,14 +3,10 @@
 ## User Story
 As an Agent HQ operator, I can see the gateway connection status and navigate to all pages which display structured data sections ready for gateway data.
 
-## Preconditions
-- Application is running at `http://localhost:3000`
-- Backend API is running at `http://localhost:8000`
-
 ## Test Steps
 
 ### Step 1: Verify Gateway Status Indicator in Header
-- Navigate to `http://localhost:3000`
+- 1. Navigate to the `Application URL`
 - **Verify**: The page loads with the app shell (sidebar + header)
 - **Verify**: A gateway connection status indicator (pill/badge) is visible in the header bar
 - **Verify**: The status indicator shows either "Connected" (green), "Connecting" (yellow), or "Disconnected" (red)

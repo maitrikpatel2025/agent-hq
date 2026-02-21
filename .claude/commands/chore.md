@@ -65,6 +65,7 @@ Execute every command to validate the chore is complete with zero regressions.
 
 <list commands you'll use to validate with 100% confidence the chore is complete with zero regressions. every command must execute without errors so be specific about what you want to run to validate the chore is complete with zero regressions. Don't validate with curl commands.>
 - `cd app/server && uv run pytest` - Run server tests to validate the chore is complete with zero regressions
+- `cd app/client && npx eslint src/ --max-warnings=0 --quiet` - Run frontend lint check to validate the chore is complete with zero regressions
 - `cd app/client && npm run build` - Run frontend build to validate the chore is complete with zero regressions
 
 ## Notes

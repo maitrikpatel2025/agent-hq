@@ -120,7 +120,7 @@ After creating the documentation, add this entry to `.claude/commands/conditiona
 - app_docs/<your_documentation_file>.md
   - Conditions:
     - When working with <feature area>
-    - When implementing <related functionality>s
+    - When implementing <related functionality>
     - When troubleshooting <specific issues>
 ```
 

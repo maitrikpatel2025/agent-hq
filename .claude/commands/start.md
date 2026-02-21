@@ -1,29 +1,23 @@
-# Start the Application
+# Start the application
 
 ## Variables
 
-CLIENT_PORT: 3000
-SERVER_PORT: 8000
+PORT: If `.ports.env` exists, read FRONTEND_PORT from it, otherwise default to 3000
 
 ## Workflow
 
-Check to see if processes are already running on CLIENT_PORT and SERVER_PORT.
+1. Check if `.ports.env` exists:
+   - If it exists, source it and use `FRONTEND_PORT` for the PORT variable
+   - If not, use default PORT: 3000
 
-### If already running:
-- Open the frontend in the browser: `open http://localhost:CLIENT_PORT`
-- Mention the API docs are available at: `http://localhost:SERVER_PORT/docs`
+2. Check to see if a process is already running on port PORT.
 
-### If not running:
-Run these commands:
+3. If it is just open it in the browser with `open http://localhost:PORT`.
 
-1. `nohup sh ./scripts/start.sh > /dev/null 2>&1 &`
-2. `sleep 5`
-3. `open http://localhost:CLIENT_PORT`
+4. If there is no process running on port PORT, run these commands:
+   - Run `nohup sh ./scripts/start.sh > /dev/null 2>&1 &`
+   - Note: start.sh automatically reads `.ports.env` if it exists
+   - Run `sleep 3`
+   - Run `open http://localhost:PORT`
 
-## Report
-- Let the user know that the application is starting (or already running)
-- Mention the services:
-  - **Frontend**: http://localhost:3000
-  - **Backend API**: http://localhost:8000
-  - **API Documentation**: http://localhost:8000/docs
-- To stop all services: `./scripts/stop_apps.sh`
+5. Let the user know that the application is running on port PORT and the browser is open.

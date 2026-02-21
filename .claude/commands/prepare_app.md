@@ -1,46 +1,27 @@
-# Prepare Application for Testing/Review
+# Prepare Application
 
-Ensure the application is running and ready for E2E tests or reviews.
+Setup the application for the review or test.
 
 ## Variables
 
-CLIENT_PORT: 3000
-SERVER_PORT: 8000
+PORT: If `.ports.env` exists, read FRONTEND_PORT from it, otherwise default to 3000
 
-## Instructions
+## Setup
 
-### 1. Check if Services are Already Running
+1. Check if `.ports.env` exists:
+   - If it exists, source it and use `FRONTEND_PORT` for the PORT variable
+   - If not, use default PORT: 3000
 
-Check to see if processes are already running on CLIENT_PORT and SERVER_PORT using `lsof -i :PORT` or equivalent.
+2. Reset the database:
+   - Run `scripts/reset_db.sh`
 
-### 2. If Not Running - Start Services
+3. Start the application:
+   - IMPORTANT: Make sure the server and client are running on a background process using `nohup sh ./scripts/start.sh > /dev/null 2>&1 &`
+   - The start.sh script will automatically use ports from `.ports.env` if it exists
+   - Use `./scripts/stop_apps.sh` to stop the server and client
 
-If services are not running:
+4. Verify the application is running:
+   - The application should be accessible at http://localhost:PORT (where PORT is from `.ports.env` (FRONTEND_PORT) or default 3000)
+   
+Note: Read `scripts/` and `README.md` for more information on how to start, stop and reset the server and client.
 
-```bash
-# Start all services (server + client)
-nohup sh ./scripts/start.sh > /dev/null 2>&1 &
-sleep 10
-```
-
-### 3. Verify Services are Ready
-
-1. **Verify Backend API**:
-   - Run: `curl -s http://localhost:8000/api/health`
-   - Expected: JSON response with `"status": "ok"`
-
-2. **Verify Frontend**:
-   - Run: `curl -s -o /dev/null -w "%{http_code}" http://localhost:3000`
-   - Expected: HTTP status code `200`
-
-### 4. Report
-
-- If both services are running and responding: Report "Application ready"
-- If services failed to start: Report the error and suggest checking logs
-
-## Application URLs
-
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:8000
-- **API Documentation**: http://localhost:8000/docs
-- **API Health Check**: http://localhost:8000/api/health

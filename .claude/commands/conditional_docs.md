@@ -18,6 +18,10 @@ This prompt helps you determine what documentation you should read based on the 
     - When first understanding the project structure
     - When you want to learn the commands to start or stop the server or client
 
+- app/client/src/index.css
+  - Conditions:
+    - When you need to make changes to the client's style
+
 - .claude/commands/classify_adw.md
   - Conditions:
     - When adding or removing new `adws/adw_*.py` files
@@ -25,3 +29,9 @@ This prompt helps you determine what documentation you should read based on the 
 - adws/README.md
   - Conditions:
     - When you're operating in the `adws/` directory
+
+- app_docs/agentic_kpis.md
+  - Conditions:
+    - When tracking or reporting ADW performance metrics
+    - When working with agentic KPIs or workflow run statistics
+    - When updating or analyzing the ADW KPIs table

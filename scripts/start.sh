@@ -6,9 +6,19 @@
 # Starts backend (FastAPI) and frontend (React)
 # =============================================================================
 
-# Port configuration
-SERVER_PORT=8000
-CLIENT_PORT=3000
+# Port configuration - check .ports.env for worktree-specific ports
+SCRIPT_DIR_TEMP="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_ROOT_TEMP="$( dirname "$SCRIPT_DIR_TEMP" )"
+
+if [ -f "$PROJECT_ROOT_TEMP/.ports.env" ]; then
+    source "$PROJECT_ROOT_TEMP/.ports.env"
+    SERVER_PORT=${BACKEND_PORT:-8000}
+    CLIENT_PORT=${FRONTEND_PORT:-3000}
+    echo -e "\033[0;34m[start.sh] Using ports from .ports.env: Backend=$SERVER_PORT, Frontend=$CLIENT_PORT\033[0m"
+else
+    SERVER_PORT=8000
+    CLIENT_PORT=3000
+fi
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -101,7 +111,7 @@ echo "Syncing dependencies..."
 uv sync --quiet 2>/dev/null || uv pip install -e . --quiet 2>/dev/null
 
 # Start server with UV
-uv run python server.py &
+API_PORT=$SERVER_PORT uv run python server.py &
 BACKEND_PID=$!
 
 # Wait for backend to start
@@ -131,7 +141,7 @@ if [ ! -d "node_modules" ]; then
     npm install
 fi
 
-npm start &
+PORT=$CLIENT_PORT npm start &
 FRONTEND_PID=$!
 
 # Wait for frontend to start

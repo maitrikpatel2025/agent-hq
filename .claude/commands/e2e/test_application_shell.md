@@ -3,13 +3,10 @@
 ## User Story
 As an Agent HQ operator, I want a persistent navigation shell with sidebar, header, and routing so that I can navigate between all 10 sections of the application with a consistent, responsive layout.
 
-## Preconditions
-- Application is running at `http://localhost:3000`
-
 ## Test Steps
 
 ### Step 1: Verify Shell Renders
-- Navigate to `http://localhost:3000`
+- 1. Navigate to the `Application URL`
 - **Verify**: The page loads with a sidebar navigation on the left and a header bar at the top
 - **Verify**: The sidebar contains the "Agent HQ" logo text and an "AH" logo icon
 - **Screenshot**: `01_shell_initial_load.png`
