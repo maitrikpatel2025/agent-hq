@@ -35,3 +35,10 @@ This prompt helps you determine what documentation you should read based on the 
     - When tracking or reporting ADW performance metrics
     - When working with agentic KPIs or workflow run statistics
     - When updating or analyzing the ADW KPIs table
+
+- app_docs/feature-d35db10d-dashboard-fleet-overview.md
+  - Conditions:
+    - When working with the Dashboard page or its widget components
+    - When modifying or extending `app/server/dashboard_routes.py`
+    - When adding new dashboard widgets under `app/client/src/components/dashboard/`
+    - When troubleshooting the `/api/dashboard` endpoint or widget data shapes
