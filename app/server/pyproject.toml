@@ -10,6 +10,8 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "pydantic>=2.5.0",
     "pydantic-settings>=2.1.0",
+    "websockets>=13.0",
+    "sse-starlette>=2.0.0",
 ]
 
 [project.optional-dependencies]
@@ -30,6 +32,8 @@ asyncio_mode = "auto"
 [dependency-groups]
 dev = [
     "pytest>=9.0.2",
+    "pytest-asyncio>=0.24.0",
+    "httpx>=0.26.0",
     "ruff>=0.1.0",
 ]
 

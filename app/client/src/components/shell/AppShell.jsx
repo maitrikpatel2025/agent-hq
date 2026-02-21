@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Menu, X, ChevronsLeft, ChevronsRight, Sun, Moon } from 'lucide-react'
 import { MainNav } from './MainNav'
 import { UserMenu } from './UserMenu'
+import GatewayStatus from '../GatewayStatus'
 
 const UTILITY_ITEMS = [
   { label: 'Settings', href: '/settings' },
@@ -140,8 +141,9 @@ export default function AppShell({
             </span>
           </div>
 
-          {/* Right: dark mode toggle + user menu */}
+          {/* Right: gateway status + dark mode toggle + user menu */}
           <div className="ml-auto flex items-center gap-2">
+            <GatewayStatus />
             <button
               onClick={onToggleDarkMode}
               className="p-1.5 rounded-md text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
