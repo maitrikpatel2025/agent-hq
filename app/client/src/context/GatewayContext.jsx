@@ -13,12 +13,14 @@ export function GatewayProvider({ children }) {
     gatewayUrl: null,
   })
   const [events, setEvents] = useState([])
+  const [lastHeartbeat, setLastHeartbeat] = useState(null)
   const cleanupRef = useRef(null)
 
   const refreshStatus = useCallback(async () => {
     try {
       const data = await fetchGatewayStatus()
       setStatus(data)
+      setLastHeartbeat(new Date())
     } catch {
       setStatus((prev) => ({ ...prev, state: 'disconnected' }))
     }
@@ -50,6 +52,7 @@ export function GatewayProvider({ children }) {
     isConnected: status.state === 'connected',
     isConnecting: status.state === 'connecting' || status.state === 'reconnecting',
     refreshStatus,
+    lastHeartbeat,
   }
 
   return (

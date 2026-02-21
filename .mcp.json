@@ -6,7 +6,7 @@
         "@playwright/mcp@latest",
         "--isolated",
         "--config",
-        "./playwright-mcp-config.json"
+        "/home/friday/agent-hq/trees/2402ba81/playwright-mcp-config.json"
       ]
     }
   }
