@@ -6,7 +6,7 @@
     },
     "contextOptions": {
       "recordVideo": {
-        "dir": "./videos",
+        "dir": "/home/friday/agent-hq/trees/2402ba81/videos",
         "size": {
           "width": 1920,
           "height": 1080
