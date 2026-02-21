@@ -627,6 +627,25 @@ ls -la trees/<adw-id>/
 cat trees/<adw-id>/agents/*/planner/raw_output.jsonl | tail -1 | jq .
 ```
 
+**"Failed to parse classify_adw response"**
+
+This error occurs when the `classify_adw` command returns non-JSON output (e.g., a file path) instead of the expected JSON object. The system includes a regex fallback that attempts to recover workflow info from the raw text, but the primary fix is ensuring the prompt returns JSON.
+
+```bash
+# Check what classify_adw actually returned
+cat agents/<adw-id>/adw_classifier/raw_output.jsonl | tail -1 | jq -r .result
+
+# Expected output format (valid JSON):
+# {"adw_slash_command": "/adw_sdlc_iso", "adw_id": "a1b2c3d4", "model_set": "base"}
+
+# If you see a file path or plain text instead, the classify_adw prompt
+# may need reinforcement. The fix is in .claude/commands/classify_adw.md
+# which uses strong JSON-only instructions at both top and bottom of the prompt.
+
+# Run the classify_adw test to validate parsing:
+python3 adws/adw_tests/test_classify_adw.py
+```
+
 ### Debug Mode
 ```bash
 export ADW_DEBUG=true

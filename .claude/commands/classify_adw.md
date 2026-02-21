@@ -1,5 +1,7 @@
 # ADW Workflow Extraction
 
+CRITICAL: Your response must be ONLY a JSON object. No file paths. No explanations. No markdown. Just raw JSON.
+
 Extract ADW workflow information from the text below and return a JSON response.
 
 ## Instructions
@@ -55,3 +57,18 @@ IMPORTANT: Always include `model_set` with value "base" if no model_set is expli
 ## Text to Analyze
 
 $ARGUMENTS
+
+## Output Rules
+
+CRITICAL REMINDERS - Read these carefully:
+- DO NOT return a file path. This is NOT a planning command.
+- DO NOT return markdown text or explanations.
+- DO NOT create any files.
+- DO NOT run any other slash commands.
+- Your ENTIRE response must be parseable by `json.loads()`.
+- Return ONLY the JSON object, nothing else before or after it.
+
+Example valid responses:
+- `{"adw_slash_command": "/adw_sdlc_iso", "model_set": "base"}`
+- `{"adw_slash_command": "/adw_plan_build_iso", "adw_id": "a1b2c3d4", "model_set": "heavy"}`
+- `{}`

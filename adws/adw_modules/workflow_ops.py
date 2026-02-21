@@ -57,6 +57,50 @@ def format_issue_message(
     return f"{ADW_BOT_IDENTIFIER} {adw_id}_{agent_name}: {message}"
 
 
+def _fallback_extract_adw_info(text: str) -> ADWExtractionResult:
+    """Attempt regex-based extraction of ADW info when JSON parsing fails.
+
+    This handles cases where the AI returns non-JSON output (e.g., a file path
+    or mixed text) but the text still contains recognizable ADW patterns.
+    """
+    # Try to find an ADW command in the text
+    adw_command = None
+    for workflow in AVAILABLE_ADW_WORKFLOWS:
+        if workflow in text or f"/{workflow}" in text:
+            adw_command = workflow
+            break
+
+    # Also try without _iso suffix
+    if not adw_command:
+        command_match = re.search(
+            r"(?:/?)adw_(\w+?)(?:_iso)?(?:\s|$|\")", text, re.IGNORECASE
+        )
+        if command_match:
+            candidate = f"adw_{command_match.group(1)}_iso"
+            if candidate in AVAILABLE_ADW_WORKFLOWS:
+                adw_command = candidate
+
+    # Try to find an ADW ID (8-character alphanumeric)
+    adw_id = None
+    id_match = re.search(r"\b([a-f0-9]{8})\b", text)
+    if id_match:
+        adw_id = id_match.group(1)
+
+    # Try to find model_set
+    model_set = "base"
+    if re.search(r"model[_\s]?set[:\s]*heavy", text, re.IGNORECASE):
+        model_set = "heavy"
+
+    if adw_command:
+        return ADWExtractionResult(
+            workflow_command=adw_command,
+            adw_id=adw_id,
+            model_set=model_set,
+        )
+
+    return ADWExtractionResult()
+
+
 def extract_adw_info(text: str, temp_adw_id: str) -> ADWExtractionResult:
     """Extract ADW workflow, ID, and model_set from text using classify_adw agent.
     Returns ADWExtractionResult with workflow_command, adw_id, and model_set."""
@@ -96,8 +140,18 @@ def extract_adw_info(text: str, temp_adw_id: str) -> ADWExtractionResult:
             return ADWExtractionResult()  # Empty result
 
         except ValueError as e:
-            print(f"Failed to parse classify_adw response: {e}")
-            return ADWExtractionResult()  # Empty result
+            # JSON parsing failed — the AI likely returned non-JSON output
+            # (e.g., a file path instead of JSON). Try regex fallback.
+            raw_output = response.output.strip()
+            print(
+                f"Failed to parse classify_adw JSON response. "
+                f"Expected JSON but got: '{raw_output[:200]}'. "
+                f"Parse error: {e}. Attempting regex fallback."
+            )
+            fallback = _fallback_extract_adw_info(raw_output)
+            if fallback.workflow_command:
+                print(f"Regex fallback recovered: {fallback}")
+            return fallback
 
     except Exception as e:
         print(f"Error calling classify_adw: {e}")
