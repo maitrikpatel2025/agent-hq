@@ -175,3 +175,25 @@ class CronJob(BaseModel):
     payload: Optional[CronPayload] = None
     delivery: Optional[dict[str, Any]] = None
     state: Optional[CronJobState] = None
+
+
+# --- Agent CRUD Request Models ---
+
+
+class AgentCreateRequest(BaseModel):
+    id: str
+    name: str
+    workspace: str
+    emoji: Optional[str] = None
+    avatar: Optional[str] = None
+
+
+class AgentUpdateRequest(BaseModel):
+    name: Optional[str] = None
+    workspace: Optional[str] = None
+    emoji: Optional[str] = None
+    avatar: Optional[str] = None
+
+
+class AgentDeleteRequest(BaseModel):
+    deleteFiles: Optional[bool] = False
