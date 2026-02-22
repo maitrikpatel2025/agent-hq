@@ -82,6 +82,29 @@ async def github_webhook(request: Request):
         trigger_reason = ""
         content_to_check = ""
 
+        # Check if this is a push to main — trigger auto-deploy
+        if event_type == "push" and payload.get("ref") == "refs/heads/main":
+            head_commit = payload.get("head_commit", {})
+            commit_id = head_commit.get("id", "unknown")[:8]
+            commit_msg = head_commit.get("message", "")
+            print(f"Push to main detected (commit {commit_id}: {commit_msg}). Deploying...")
+
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            repo_root = os.path.dirname(os.path.dirname(script_dir))
+            deploy_script = os.path.join(repo_root, "scripts", "deploy.sh")
+
+            subprocess.Popen(
+                ["bash", deploy_script],
+                cwd=repo_root,
+                start_new_session=True,
+            )
+
+            return {
+                "status": "deploying",
+                "commit": commit_id,
+                "message": commit_msg,
+            }
+
         # Check if this is an issue opened event
         if event_type == "issues" and action == "opened" and issue_number:
             issue_body = issue.get("body", "")
