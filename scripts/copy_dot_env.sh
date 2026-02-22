@@ -37,7 +37,7 @@ if [ -f "$PROJECT_ROOT/app/client/env.example" ]; then
 else
     # Create default client .env
     if [ ! -f "$PROJECT_ROOT/app/client/.env" ]; then
-        echo "REACT_APP_API_URL=http://localhost:8000/api" > "$PROJECT_ROOT/app/client/.env"
+        echo "REACT_APP_API_URL=/api" > "$PROJECT_ROOT/app/client/.env"
         echo -e "${GREEN}Created app/client/.env with defaults${NC}"
     fi
 fi

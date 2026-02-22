@@ -74,7 +74,7 @@ if [ ! -f "$PROJECT_ROOT/app/client/.env" ]; then
     if [ -f "$PROJECT_ROOT/app/client/env.example" ]; then
         cp "$PROJECT_ROOT/app/client/env.example" "$PROJECT_ROOT/app/client/.env"
     else
-        echo "REACT_APP_API_URL=http://localhost:$SERVER_PORT/api" > "$PROJECT_ROOT/app/client/.env"
+        echo "REACT_APP_API_URL=/api" > "$PROJECT_ROOT/app/client/.env"
     fi
 fi
 

@@ -78,7 +78,7 @@ CORS_ORIGINS=http://localhost:3000,http://localhost:5173
 #### Client (`app/client/.env`)
 
 ```bash
-REACT_APP_API_URL=http://localhost:8000/api
+REACT_APP_API_URL=/api
 ```
 
 ## Running Tests

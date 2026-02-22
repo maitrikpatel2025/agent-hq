@@ -51,7 +51,7 @@ else
         echo -e "${GREEN}Created app/client/.env${NC}"
     else
         # Create minimal client .env
-        echo "REACT_APP_API_URL=http://localhost:8000/api" > "$APP_DIR/client/.env"
+        echo "REACT_APP_API_URL=/api" > "$APP_DIR/client/.env"
         echo -e "${GREEN}Created app/client/.env with default API URL${NC}"
     fi
 fi

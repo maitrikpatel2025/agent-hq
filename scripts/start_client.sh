@@ -22,7 +22,7 @@ if [ ! -f ".env" ]; then
     if [ -f "env.example" ]; then
         cp env.example .env
     else
-        echo "REACT_APP_API_URL=http://localhost:8000/api" > .env
+        echo "REACT_APP_API_URL=/api" > .env
     fi
     echo -e "${GREEN}Created .env with default settings${NC}"
 fi
