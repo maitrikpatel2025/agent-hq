@@ -42,3 +42,11 @@ This prompt helps you determine what documentation you should read based on the 
     - When modifying or extending `app/server/dashboard_routes.py`
     - When adding new dashboard widgets under `app/client/src/components/dashboard/`
     - When troubleshooting the `/api/dashboard` endpoint or widget data shapes
+
+- app_docs/feature-fb641441-agents-fleet-roster-crud.md
+  - Conditions:
+    - When working with the Agents page (`app/client/src/pages/Agents.jsx`)
+    - When modifying or extending agent CRUD routes in `app/server/gateway_routes.py`
+    - When adding or changing components under `app/client/src/components/agents/`
+    - When troubleshooting agent create, update, or delete operations
+    - When working with real-time agent presence/online status indicators

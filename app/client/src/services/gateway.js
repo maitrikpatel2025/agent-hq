@@ -65,6 +65,35 @@ export async function patchConfig(patch) {
   return data
 }
 
+export async function createAgent(payload) {
+  const { data } = await api.post('/gateway/agents', payload)
+  return data
+}
+
+export async function updateAgent(agentId, payload) {
+  const { data } = await api.patch(`/gateway/agents/${agentId}`, payload)
+  return data
+}
+
+export async function deleteAgent(agentId, deleteFiles = false) {
+  const { data } = await api.delete(`/gateway/agents/${agentId}`, {
+    params: deleteFiles ? { deleteFiles: true } : {},
+  })
+  return data
+}
+
+export async function fetchAgentFiles(agentId) {
+  const { data } = await api.get(`/gateway/agents/${agentId}/files`)
+  return data
+}
+
+export async function fetchAgentFileContent(agentId, path) {
+  const { data } = await api.get(`/gateway/agents/${agentId}/files/content`, {
+    params: { path },
+  })
+  return data
+}
+
 export async function fetchDashboard() {
   const { data } = await api.get('/dashboard')
   return data

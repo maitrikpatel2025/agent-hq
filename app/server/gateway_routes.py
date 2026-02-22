@@ -11,6 +11,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sse_starlette.sse import EventSourceResponse
 
 from gateway_client import GatewayClient, get_gateway_client
+from gateway_models import AgentCreateRequest, AgentUpdateRequest
 
 logger = logging.getLogger("gateway_routes")
 
@@ -63,6 +64,69 @@ async def get_agent_identity(
 ):
     """Get agent metadata via agent.identity.get."""
     return await _proxy_rpc(client, "agent.identity.get", {"agentId": agent_id})
+
+
+@router.post("/agents")
+async def create_agent(
+    body: AgentCreateRequest, client: GatewayClient = Depends(get_gateway_client)
+):
+    """Create a new agent via agents.create."""
+    params: dict[str, Any] = {"id": body.id, "name": body.name, "workspace": body.workspace}
+    if body.emoji is not None:
+        params["emoji"] = body.emoji
+    if body.avatar is not None:
+        params["avatar"] = body.avatar
+    return await _proxy_rpc(client, "agents.create", params)
+
+
+@router.patch("/agents/{agent_id}")
+async def update_agent(
+    agent_id: str,
+    body: AgentUpdateRequest,
+    client: GatewayClient = Depends(get_gateway_client),
+):
+    """Update an existing agent via agents.update."""
+    params: dict[str, Any] = {"id": agent_id}
+    if body.name is not None:
+        params["name"] = body.name
+    if body.workspace is not None:
+        params["workspace"] = body.workspace
+    if body.emoji is not None:
+        params["emoji"] = body.emoji
+    if body.avatar is not None:
+        params["avatar"] = body.avatar
+    return await _proxy_rpc(client, "agents.update", params)
+
+
+@router.delete("/agents/{agent_id}")
+async def delete_agent(
+    agent_id: str,
+    deleteFiles: Optional[bool] = Query(False),
+    client: GatewayClient = Depends(get_gateway_client),
+):
+    """Delete an agent via agents.delete."""
+    params: dict[str, Any] = {"id": agent_id}
+    if deleteFiles:
+        params["deleteFiles"] = True
+    return await _proxy_rpc(client, "agents.delete", params)
+
+
+@router.get("/agents/{agent_id}/files")
+async def list_agent_files(
+    agent_id: str, client: GatewayClient = Depends(get_gateway_client)
+):
+    """List agent workspace files via agents.files.list."""
+    return await _proxy_rpc(client, "agents.files.list", {"agentId": agent_id})
+
+
+@router.get("/agents/{agent_id}/files/content")
+async def get_agent_file_content(
+    agent_id: str,
+    path: str = Query(...),
+    client: GatewayClient = Depends(get_gateway_client),
+):
+    """Get agent workspace file content via agents.files.get."""
+    return await _proxy_rpc(client, "agents.files.get", {"agentId": agent_id, "path": path})
 
 
 # --- Sessions ---
