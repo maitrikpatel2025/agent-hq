@@ -1,10 +1,12 @@
 """Unit tests for the gateway WebSocket client."""
 
 
+import json
+
 import pytest
 
 from gateway_client import GatewayClient
-from gateway_models import ConnectionState
+from gateway_models import ClientInfo, ConnectParams, ConnectionState
 
 
 class TestGatewayClientInit:
@@ -121,3 +123,103 @@ class TestConnectWithoutUrl:
         client = GatewayClient(url="", token="")
         await client.disconnect()
         assert client.state == ConnectionState.DISCONNECTED
+
+
+class TestConnectParamsScopes:
+    """Test that ConnectParams always carries the required operator scopes."""
+
+    def test_default_connect_params_includes_operator_scopes(self):
+        params = ConnectParams()
+        assert "operator.read" in params.scopes
+        assert "operator.write" in params.scopes
+        assert "operator.admin" in params.scopes
+
+    def test_connect_params_with_explicit_client_and_auth_includes_scopes(self):
+        params = ConnectParams(client=ClientInfo(), auth={})
+        assert "operator.read" in params.scopes
+        assert "operator.write" in params.scopes
+        assert "operator.admin" in params.scopes
+
+    def test_connect_params_model_dump_contains_scopes(self):
+        params = ConnectParams(client=ClientInfo(), auth={})
+        dumped = params.model_dump()
+        assert dumped["scopes"] == ["operator.read", "operator.write", "operator.admin"]
+
+
+class TestHandshakeScopeInWireFrame:
+    """Test that _perform_handshake sends all required operator scopes on the wire."""
+
+    @pytest.mark.asyncio
+    async def test_handshake_sends_operator_scopes(self):
+        from unittest.mock import AsyncMock
+
+        client = GatewayClient(url="ws://fake:9999", token="test-token")
+
+        challenge_frame = json.dumps({
+            "type": "event",
+            "event": "connect.challenge",
+            "payload": {"nonce": "abc", "ts": 1234567890},
+        })
+        hello_ok_frame = json.dumps({
+            "type": "res",
+            "id": "1",
+            "ok": True,
+            "payload": {
+                "type": "hello-ok",
+                "protocol": 3,
+                "server": {"version": "1.0.0", "commit": "abc", "connId": "conn-1"},
+                "features": {"methods": ["agents.list"], "events": ["presence"]},
+                "snapshot": {"uptimeMs": 1000},
+            },
+        })
+
+        mock_ws = AsyncMock()
+        mock_ws.recv = AsyncMock(side_effect=[challenge_frame, hello_ok_frame])
+        sent_frames = []
+        mock_ws.send = AsyncMock(side_effect=lambda frame: sent_frames.append(frame))
+
+        client._ws = mock_ws
+        await client._perform_handshake()
+
+        assert len(sent_frames) == 1
+        connect_frame = json.loads(sent_frames[0])
+        assert connect_frame["method"] == "connect"
+        scopes = connect_frame["params"]["scopes"]
+        assert "operator.read" in scopes
+        assert "operator.write" in scopes
+        assert "operator.admin" in scopes
+
+    @pytest.mark.asyncio
+    async def test_handshake_sends_operator_role(self):
+        from unittest.mock import AsyncMock
+
+        client = GatewayClient(url="ws://fake:9999", token="test-token")
+
+        challenge_frame = json.dumps({
+            "type": "event",
+            "event": "connect.challenge",
+            "payload": {"nonce": "xyz", "ts": 9999},
+        })
+        hello_ok_frame = json.dumps({
+            "type": "res",
+            "id": "1",
+            "ok": True,
+            "payload": {
+                "type": "hello-ok",
+                "protocol": 3,
+                "server": {"version": "1.0.0", "commit": "abc", "connId": "conn-2"},
+                "features": {"methods": [], "events": []},
+                "snapshot": {"uptimeMs": 500},
+            },
+        })
+
+        mock_ws = AsyncMock()
+        mock_ws.recv = AsyncMock(side_effect=[challenge_frame, hello_ok_frame])
+        sent_frames = []
+        mock_ws.send = AsyncMock(side_effect=lambda frame: sent_frames.append(frame))
+
+        client._ws = mock_ws
+        await client._perform_handshake()
+
+        connect_frame = json.loads(sent_frames[0])
+        assert connect_frame["params"]["role"] == "operator"
