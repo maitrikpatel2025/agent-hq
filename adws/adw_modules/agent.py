@@ -334,6 +334,10 @@ def prompt_claude_code(request: AgentPromptRequest) -> AgentPromptResponse:
         if os.path.exists(mcp_config_path):
             cmd.extend(["--mcp-config", mcp_config_path])
 
+    # Disable all tools for text-only responses (e.g., classification commands)
+    if request.disable_tools:
+        cmd.extend(["--tools", ""])
+
     # Add dangerous skip permissions flag if enabled
     if request.dangerously_skip_permissions:
         cmd.append("--dangerously-skip-permissions")
@@ -555,6 +559,7 @@ def execute_template(request: AgentTemplateRequest) -> AgentPromptResponse:
         dangerously_skip_permissions=True,
         output_file=output_file,
         working_dir=request.working_dir,  # Pass through working_dir
+        disable_tools=request.disable_tools,  # Pass through disable_tools
     )
 
     # Execute with retry logic and return response (prompt_claude_code now handles all parsing)

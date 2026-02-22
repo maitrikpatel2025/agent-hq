@@ -106,11 +106,13 @@ def extract_adw_info(text: str, temp_adw_id: str) -> ADWExtractionResult:
     Returns ADWExtractionResult with workflow_command, adw_id, and model_set."""
 
     # Use classify_adw to extract structured info
+    # disable_tools prevents the agent from executing tools — forces text-only response
     request = AgentTemplateRequest(
         agent_name="adw_classifier",
         slash_command="/classify_adw",
         args=[text],
         adw_id=temp_adw_id,
+        disable_tools=True,
     )
 
     try:
@@ -158,6 +160,28 @@ def extract_adw_info(text: str, temp_adw_id: str) -> ADWExtractionResult:
         return ADWExtractionResult()  # Empty result
 
 
+VALID_ISSUE_COMMANDS = ["/chore", "/bug", "/feature"]
+
+
+def _fallback_classify_issue(text: str) -> Optional[IssueClassSlashCommand]:
+    """Attempt regex-based extraction of issue classification when output is messy.
+
+    This handles cases where the AI returns non-command output (e.g., a file path
+    or mixed text) but the text still contains a recognizable classification keyword.
+    """
+    text_lower = text.lower()
+
+    # Look for classification keywords anywhere in the text
+    if re.search(r"\bbug\b", text_lower):
+        return "/bug"
+    if re.search(r"\bfeature\b", text_lower):
+        return "/feature"
+    if re.search(r"\bchore\b", text_lower):
+        return "/chore"
+
+    return None
+
+
 def classify_issue(
     issue: GitHubIssue, adw_id: str, logger: logging.Logger
 ) -> Tuple[Optional[IssueClassSlashCommand], Optional[str]]:
@@ -170,11 +194,13 @@ def classify_issue(
         by_alias=True, include={"number", "title", "body"}
     )
 
+    # disable_tools prevents the agent from executing tools — forces text-only response
     request = AgentTemplateRequest(
         agent_name=AGENT_CLASSIFIER,
         slash_command="/classify_issue",
         args=[minimal_issue_json],
         adw_id=adw_id,
+        disable_tools=True,
     )
 
     logger.debug(f"Classifying issue: {issue.title}")
@@ -198,12 +224,21 @@ def classify_issue(
     if classification_match:
         issue_command = classification_match.group(1)
     else:
+        # Primary regex didn't match — try fallback extraction
+        fallback = _fallback_classify_issue(output)
+        if fallback:
+            print(
+                f"classify_issue fallback recovered '{fallback}' from: "
+                f"'{output[:200]}'"
+            )
+            return fallback, None
+        # Nothing recoverable
         issue_command = output
 
     if issue_command == "0":
         return None, f"No command selected: {response.output}"
 
-    if issue_command not in ["/chore", "/bug", "/feature"]:
+    if issue_command not in VALID_ISSUE_COMMANDS:
         return None, f"Invalid command selected: {response.output}"
 
     return issue_command, None  # type: ignore

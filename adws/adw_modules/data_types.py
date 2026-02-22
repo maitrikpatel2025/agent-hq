@@ -154,6 +154,7 @@ class AgentPromptRequest(BaseModel):
     dangerously_skip_permissions: bool = False
     output_file: str
     working_dir: Optional[str] = None
+    disable_tools: bool = False  # Disable all tools (forces text-only response)
 
 
 class AgentPromptResponse(BaseModel):
@@ -174,6 +175,7 @@ class AgentTemplateRequest(BaseModel):
     adw_id: str
     model: Literal["sonnet", "opus"] = "sonnet"
     working_dir: Optional[str] = None
+    disable_tools: bool = False  # Disable all tools (forces text-only response)
 
 
 class ClaudeCodeResultMessage(BaseModel):
