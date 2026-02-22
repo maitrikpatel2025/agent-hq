@@ -1,6 +1,6 @@
 """Unit tests for agent CRUD API routes."""
 
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock
 
 import pytest
 from httpx import ASGITransport, AsyncClient
