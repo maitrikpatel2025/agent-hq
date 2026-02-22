@@ -39,10 +39,23 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Agent HQ API", version="0.1.0", lifespan=lifespan)
 
+cors_origins = os.getenv("CORS_ORIGINS", "*").split(",")
+
+# Auto-include the worktree frontend origin when FRONTEND_PORT is set
+frontend_port = os.getenv("FRONTEND_PORT")
+if frontend_port and cors_origins != ["*"]:
+    worktree_origin = f"http://localhost:{frontend_port}"
+    if worktree_origin not in cors_origins:
+        cors_origins.append(worktree_origin)
+
+# Wildcard origin with credentials is invalid per CORS spec; browsers reject it.
+# When origins are explicit, enable credentials; otherwise disable them.
+cors_allow_credentials = cors_origins != ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.getenv("CORS_ORIGINS", "*").split(","),
-    allow_credentials=True,
+    allow_origins=cors_origins,
+    allow_credentials=cors_allow_credentials,
     allow_methods=["*"],
     allow_headers=["*"],
 )

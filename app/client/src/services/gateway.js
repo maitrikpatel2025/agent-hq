@@ -105,8 +105,12 @@ export function subscribeToEvents(onEvent) {
     })
   })
 
-  eventSource.onerror = () => {
-    // EventSource auto-reconnects
+  eventSource.onerror = (err) => {
+    console.warn('[SSE] EventSource error – readyState:', eventSource.readyState, err)
+    // EventSource auto-reconnects when readyState is CONNECTING (0)
+    if (eventSource.readyState === EventSource.CLOSED) {
+      console.error('[SSE] Connection closed permanently')
+    }
   }
 
   return () => {
