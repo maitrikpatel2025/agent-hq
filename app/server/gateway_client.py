@@ -194,8 +194,11 @@ class GatewayClient:
         # Stage 2: Send connect request
         connect_params = ConnectParams(
             client=ClientInfo(),
+            role="operator",
+            scopes=["operator.read", "operator.write", "operator.admin"],
             auth={"token": self.token} if self.token else {},
         )
+        logger.debug(f"Connecting with scopes: {connect_params.scopes}")
 
         connect_request = GatewayRequest(
             id="1",
