@@ -50,7 +50,8 @@ nohup bash scripts/start_server.sh >> "$LOG_FILE" 2>&1 &
 sleep 3
 
 log "Starting client..."
-nohup bash scripts/start_client.sh >> "$LOG_FILE" 2>&1 &
+cd "$PROJECT_ROOT/app/client"
+BROWSER=none PORT=3000 nohup npm start >> "$LOG_FILE" 2>&1 &
 sleep 3
 
 log "Deploy complete. Commit: $COMMIT"
